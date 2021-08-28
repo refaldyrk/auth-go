@@ -31,6 +31,12 @@ func (s *service) Register(input RegisterUserInput) (User, error) {
 	}
 	user.PasswordHash = string(passwordHash)
 	user.Role = "user"
+
+	//Jika User Memasukan Password Dibawah 7 Maka Tidak Akan Di Register
+	if len(input.Password) < 7 {
+		return user, errors.New("Password Terlalu Pendek")
+	}
+
 	newUser, err := s.repository.Save(user)
 
 	if err != nil {
